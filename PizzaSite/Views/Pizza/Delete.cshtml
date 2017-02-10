@@ -1,0 +1,41 @@
+﻿@model PizzaSite.Models.Pizza
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Pizza</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumOrdered)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumOrdered)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PizzaPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PizzaPrice)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to Order", "../Order/Details", new { id = @Model.OrderID })
+        </div>
+    }
+</div>

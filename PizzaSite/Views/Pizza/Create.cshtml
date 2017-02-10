@@ -1,0 +1,94 @@
+﻿@model PizzaSite.ViewModels.PizzaViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+<script>
+    function disallowNegativeNumber(e) {
+        var charCode = (e.which) ? e.which : event.keyCode
+        if (charCode == 45) {
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { onsubmit = "validatePizzaForm()" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Pizza</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-horizontal">            
+        <div class="form-group">
+                        <label class="control-label col-md-2" for="SizeID">Size</label>
+                        <div class="col-md-4">
+                            @Html.DropDownList("SizeID", (SelectList)ViewBag.SizeName)
+                            @Html.ValidationMessageFor(model => model.SizeID)
+                        </div>
+            <label class="control-label col-md-2">
+                How Many Would You Like?
+            </label>
+            <div class="col-md-4">  
+                @Html.EditorFor(model => model.NumOrdered, new { htmlAttributes = new { onkeypress = "return disallowNegativeNumber(event)", @class = "form-control" } });
+                @Html.ValidationMessageFor(model => model.NumOrdered, "", new { @class = "text-danger" })
+            </div>
+        </div>
+            </div>
+        <div class="form-group" hidden>
+           @Html.DropDownList("OrderID", (SelectList)ViewBag.OrderId);
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Toppings
+            </label>
+            <div class="col-md-offset-2 col-md-10">
+                <table id="toppingTable">
+                    <tr>
+
+                        @for (int i = 0; i < Model.SelectedToppings.Count(); i++)
+                        {
+                            if ((i % 5) == 0)
+                            {
+                                @: <tr>
+                            }
+                            <td class="toppings">
+
+                                @Html.CheckBoxFor(model => model.SelectedToppings[i].OnPizza)
+                                @Html.DisplayFor(x => x.SelectedToppings[i].ToppingName)
+                            </td>
+
+                            if ((i % 5) == 4)
+                            {
+                                @: </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+                            
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/Scripts/ValidatorScript.js")
+
+ 
+}
